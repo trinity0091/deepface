@@ -31,19 +31,19 @@ def loadModel():
 	
 	home = str(Path.home())
 	
-	if os.path.isfile(home+'/.deepface/weights/race_model_single_batch.h5') != True:
+	if os.path.isfile('/weights/race_model_single_batch.h5') != True:
 		print("race_model_single_batch.h5 will be downloaded...")
 		
 		#zip
 		url = 'https://drive.google.com/uc?id=1nz-WDhghGQBC4biwShQ9kYjvQMpO6smj'
-		output = home+'/.deepface/weights/race_model_single_batch.zip'
+		output = '/weights/race_model_single_batch.zip'
 		gdown.download(url, output, quiet=False)
 		
 		#unzip race_model_single_batch.zip
 		with zipfile.ZipFile(output, 'r') as zip_ref:
 			zip_ref.extractall(home+'/.deepface/weights/')
 	
-	race_model.load_weights(home+'/.deepface/weights/race_model_single_batch.h5')
+	race_model.load_weights('/weights/race_model_single_batch.h5')
 	
 	return race_model
 	
