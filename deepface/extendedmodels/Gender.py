@@ -30,14 +30,14 @@ def loadModel():
 	
 	home = str(Path.home())
 	
-	if os.path.isfile(home+'/.deepface/weights/gender_model_weights.h5') != True:
+	if os.path.isfile('/weights/gender_model_weights.h5') != True:
 		print("gender_model_weights.h5 will be downloaded...")
 		
 		url = 'https://drive.google.com/uc?id=1wUXRVlbsni2FN9-jkS_f4UTUrm1bRLyk'
-		output = home+'/.deepface/weights/gender_model_weights.h5'
+		output = '/weights/gender_model_weights.h5'
 		gdown.download(url, output, quiet=False)
 	
-	gender_model.load_weights(home+'/.deepface/weights/gender_model_weights.h5')
+	gender_model.load_weights('/weights/gender_model_weights.h5')
 	
 	return gender_model
 	
