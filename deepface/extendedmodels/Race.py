@@ -32,7 +32,7 @@ def loadModel():
 	home = str(Path.home())
 
 	
-	race_model.load_weights('/weights/race_model_single_batch.h5')
+	race_model.load_weights('race_model_single_batch.h5')
 	
 	return race_model
 	
