@@ -28,14 +28,7 @@ def loadModel():
 	
 	#load weights
 	
-	home = str(Path.home())
 	
-	if os.path.isfile('/weights/gender_model_weights.h5') != True:
-		print("gender_model_weights.h5 will be downloaded...")
-		
-		url = 'https://drive.google.com/uc?id=1wUXRVlbsni2FN9-jkS_f4UTUrm1bRLyk'
-		output = '/weights/gender_model_weights.h5'
-		gdown.download(url, output, quiet=False)
 	
 	gender_model.load_weights('/weights/gender_model_weights.h5')
 	
