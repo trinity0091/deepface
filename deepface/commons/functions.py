@@ -30,17 +30,7 @@ def findFileHash(file):
 	
 	return file_hash.hexdigest()
 
-def initializeFolder():
-	
-	home = str(Path.home())
-	
-	if not os.path.exists(home+"/.deepface"):
-		os.mkdir(home+"/.deepface")
-		print("Directory ",home,"/.deepface created")
-	
-	if not os.path.exists(home+"/.deepface/weights"):
-		os.mkdir(home+"/.deepface/weights")
-		print("Directory ",home,"/.deepface/weights created")
+
 	
 	#----------------------------------
 	"""
