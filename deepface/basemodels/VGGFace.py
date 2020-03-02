@@ -61,7 +61,7 @@ def loadModel():
 
 	#-----------------------------------
 	
-	model.load_weights('/weights/vgg_face_weights.h5')
+	model.load_weights('vgg_face_weights.h5')
 	
 	#-----------------------------------
 	
