@@ -30,7 +30,7 @@ def loadModel():
 	
 	
 	
-	gender_model.load_weights('/weights/gender_model_weights.h5')
+	gender_model.load_weights('gender_model_weights.h5')
 	
 	return gender_model
 	
