@@ -15,7 +15,7 @@ import keras.backend as K
 #from commons import functions, distance as dst
 
 from deepface.basemodels import VGGFace, OpenFace, Facenet, FbDeepFace
-from deepface.extendedmodels import Age, Gender, Race, Emotion
+from deepface.extendedmodels import Gender, Race
 from deepface.commons import functions, distance as dst
 
 def verify(img1_path, img2_path
@@ -133,108 +133,34 @@ age_model = Age.loadModel()
 race_model = Race.loadModel()
 gender_model = Gender.loadModel()
 
-def analyze(img_path, actions= []):
-	
+def analyze(img_path):
+
 	if os.path.isfile(img_path) != True:
 		raise ValueError("Confirm that ",img_path," exists")
-	
-	resp_obj = "{"
-	
-	#if a specific target is not passed, then find them all
-	if len(actions) == 0:
-		actions= ['emotion', 'age', 'gender', 'race']
-	
-	print("Actions to do: ", actions)
-	
-	#TO-DO: do this in parallel
-	
-	pbar = tqdm(range(0,len(actions)), desc='Finding actions')
-	
-	action_idx = 0
 	#for action in actions:
-	for index in pbar:
-		action = actions[index]
-		pbar.set_description("Action: %s" % (action))
-		
-		if action_idx > 0:
-			resp_obj += ", "
-		
-		if action == 'emotion':
-			emotion_labels = ['angry', 'disgust', 'fear', 'happy', 'sad', 'surprise', 'neutral']
-			img = functions.detectFace(img_path, (48, 48), True)
-			global emotion_model
-			
-			emotion_predictions = model.predict(img)[0,:]
-			
-			sum_of_predictions = emotion_predictions.sum()
-			
-			emotion_obj = "\"emotion\": {"
-			for i in range(0, len(emotion_labels)):
-				emotion_label = emotion_labels[i]
-				emotion_prediction = 100 * emotion_predictions[i] / sum_of_predictions
-				
-				if i > 0: emotion_obj += ", "
-				
-				emotion_obj += "\"%s\": %s" % (emotion_label, emotion_prediction)
-			
-			emotion_obj += "}"
-			
-			emotion_obj += ", \"dominant_emotion\": \"%s\"" % (emotion_labels[np.argmax(emotion_predictions)])
-			
-			resp_obj += emotion_obj
-			
-		elif action == 'age':
-			img = functions.detectFace(img_path, (224, 224), False) #just emotion model expects grayscale images
-			#print("age prediction")
-			global age_model
-			age_predictions = model.predict(img)[0,:]
-			apparent_age = Age.findApparentAge(age_predictions)
-			
-			resp_obj += "\"age\": %s" % (apparent_age)
-			
-		elif action == 'gender':
-			img = functions.detectFace(img_path, (224, 224), False) #just emotion model expects grayscale images
-			#print("gender prediction")
-			global gender_model
-			gender_prediction = model.predict(img)[0,:]
-			
-			if np.argmax(gender_prediction) == 0:
-				gender = "Woman"
-			elif np.argmax(gender_prediction) == 1:
-				gender = "Man"
-			
-			resp_obj += "\"gender\": \"%s\"" % (gender)
-			
-		elif action == 'race':
-			img = functions.detectFace(img_path, (224, 224), False) #just emotion model expects grayscale images
-			global race_model
-			race_predictions = model.predict(img)[0,:]
-			race_labels = ['asian', 'indian', 'black', 'white', 'middle eastern', 'latino hispanic']
-			
-			sum_of_predictions = race_predictions.sum()
-			
-			race_obj = "\"race\": {"
-			for i in range(0, len(race_labels)):
-				race_label = race_labels[i]
-				race_prediction = 100 * race_predictions[i] / sum_of_predictions
-				
-				if i > 0: race_obj += ", "
-				
-				race_obj += "\"%s\": %s" % (race_label, race_prediction)
-			
-			race_obj += "}"
-			race_obj += ", \"dominant_race\": \"%s\"" % (race_labels[np.argmax(race_predictions)])
-			
-			resp_obj += race_obj
-		
-		action_idx = action_idx + 1
-	
-	resp_obj += "}"
-	
-	resp_obj = json.loads(resp_obj)
-	K.clear_session()
-	
-	return resp_obj
+	gender_model = Gender.loadModel()
+	race_model = Race.loadModel()
+	img = functions.detectFace(img_path, (224, 224), False)
+	gender_prediction = gender_model.predict(img)[0,:]
+	race_predictions = race_model.predict(img)[0,:]
+
+	if np.argmax(gender_prediction) == 0:
+		gender = "Woman"
+	elif np.argmax(gender_prediction) == 1:
+		gender = "Man"
+
+	race_labels = ['asian', 'indian', 'black', 'white', 'middle eastern', 'latino hispanic']
+	sum_of_predictions = race_predictions.sum()
+
+	for i in range(0, len(race_labels)):
+		race_label = race_labels[i]
+		race_prediction = 100 * race_predictions[i] / sum_of_predictions
+	del gender_model
+	del race_model
+	del img
+	gc.collect()
+
+	return gender, race_labels[np.argmax(race_predictions)]
 
 def detectFace(img_path):
 	img = functions.detectFace(img_path)[0] #detectFace returns (1, 224, 224, 3)
