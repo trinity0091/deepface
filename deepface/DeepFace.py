@@ -128,39 +128,36 @@ def verify(img1_path, img2_path
 	
 	return resp_obj
 
-emotion_model = Emotion.loadModel()
-age_model = Age.loadModel()
 race_model = Race.loadModel()
 gender_model = Gender.loadModel()
 
 def analyze(img_path):
+    if os.path.isfile(img_path) != True:
+        raise ValueError("Confirm that ",img_path," exists")
+    #for action in actions:
+    global gender_model
+    global race_model
+    img = functions.detectFace(img_path, (224, 224), False)
+    gender_prediction = gender_model.predict(img)[0,:]
+    race_predictions = race_model.predict(img)[0,:]
+    K.clear_session()
+    if np.argmax(gender_prediction) == 0:
+        gender = "Woman"
+    elif np.argmax(gender_prediction) == 1:
+        gender = "Man"
 
-	if os.path.isfile(img_path) != True:
-		raise ValueError("Confirm that ",img_path," exists")
-	#for action in actions:
-	gender_model = Gender.loadModel()
-	race_model = Race.loadModel()
-	img = functions.detectFace(img_path, (224, 224), False)
-	gender_prediction = gender_model.predict(img)[0,:]
-	race_predictions = race_model.predict(img)[0,:]
+    race_labels = ['asian', 'indian', 'black', 'white', 'middle eastern', 'latino hispanic']
+    sum_of_predictions = race_predictions.sum()
 
-	if np.argmax(gender_prediction) == 0:
-		gender = "Woman"
-	elif np.argmax(gender_prediction) == 1:
-		gender = "Man"
+    for i in range(0, len(race_labels)):
+        race_label = race_labels[i]
+        race_prediction = 100 * race_predictions[i] / sum_of_predictions
+    #del gender_model
+    #del race_model
+    #del img
+    gc.collect()
 
-	race_labels = ['asian', 'indian', 'black', 'white', 'middle eastern', 'latino hispanic']
-	sum_of_predictions = race_predictions.sum()
-
-	for i in range(0, len(race_labels)):
-		race_label = race_labels[i]
-		race_prediction = 100 * race_predictions[i] / sum_of_predictions
-	del gender_model
-	del race_model
-	del img
-	gc.collect()
-
-	return gender, race_labels[np.argmax(race_predictions)]
+    return gender, race_labels[np.argmax(race_predictions)]
 
 def detectFace(img_path):
 	img = functions.detectFace(img_path)[0] #detectFace returns (1, 224, 224, 3)
