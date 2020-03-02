@@ -8,6 +8,7 @@ import numpy as np
 import pandas as pd
 from tqdm import tqdm
 import json
+import keras.backend as K
 
 #from basemodels import VGGFace, OpenFace, Facenet, FbDeepFace
 #from extendedmodels import Age, Gender, Race, Emotion
@@ -127,6 +128,11 @@ def verify(img1_path, img2_path
 	
 	return resp_obj
 
+emotion_model = Emotion.loadModel()
+age_model = Age.loadModel()
+race_model = Race.loadModel()
+gender_model = Gender.loadModel()
+
 def analyze(img_path, actions= []):
 	
 	if os.path.isfile(img_path) != True:
@@ -156,8 +162,8 @@ def analyze(img_path, actions= []):
 		if action == 'emotion':
 			emotion_labels = ['angry', 'disgust', 'fear', 'happy', 'sad', 'surprise', 'neutral']
 			img = functions.detectFace(img_path, (48, 48), True)
+			global emotion_model
 			
-			model = Emotion.loadModel()
 			emotion_predictions = model.predict(img)[0,:]
 			
 			sum_of_predictions = emotion_predictions.sum()
@@ -180,7 +186,7 @@ def analyze(img_path, actions= []):
 		elif action == 'age':
 			img = functions.detectFace(img_path, (224, 224), False) #just emotion model expects grayscale images
 			#print("age prediction")
-			model = Age.loadModel()
+			global age_model
 			age_predictions = model.predict(img)[0,:]
 			apparent_age = Age.findApparentAge(age_predictions)
 			
@@ -189,8 +195,7 @@ def analyze(img_path, actions= []):
 		elif action == 'gender':
 			img = functions.detectFace(img_path, (224, 224), False) #just emotion model expects grayscale images
 			#print("gender prediction")
-			
-			model = Gender.loadModel()
+			global gender_model
 			gender_prediction = model.predict(img)[0,:]
 			
 			if np.argmax(gender_prediction) == 0:
@@ -202,7 +207,7 @@ def analyze(img_path, actions= []):
 			
 		elif action == 'race':
 			img = functions.detectFace(img_path, (224, 224), False) #just emotion model expects grayscale images
-			model = Race.loadModel()
+			global race_model
 			race_predictions = model.predict(img)[0,:]
 			race_labels = ['asian', 'indian', 'black', 'white', 'middle eastern', 'latino hispanic']
 			
@@ -227,6 +232,7 @@ def analyze(img_path, actions= []):
 	resp_obj += "}"
 	
 	resp_obj = json.loads(resp_obj)
+	K.clear_session()
 	
 	return resp_obj
 
