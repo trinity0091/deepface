@@ -58,17 +58,7 @@ def loadModel():
 	
 	model = baseModel()
 	
-	#-----------------------------------
-	
-	home = str(Path.home())
-	
-	if os.path.isfile('/weights/vgg_face_weights.h5') != True:
-		print("vgg_face_weights.h5 will be downloaded...")
-		
-		url = 'https://drive.google.com/uc?id=1CPSeum3HpopfomUEK1gybeuIVoeJT_Eo'
-		output = '/weights/vgg_face_weights.h5'
-		gdown.download(url, output, quiet=False)
-	
+
 	#-----------------------------------
 	
 	model.load_weights('/weights/vgg_face_weights.h5')
