@@ -67,8 +67,10 @@ def loadModel(url = 'https://drive.google.com/uc?id=1CPSeum3HpopfomUEK1gybeuIVoe
 	
 	model = baseModel()
 	
+
 	#-----------------------------------
 	
+<<<<<<< HEAD
 	home = str(Path.home())
 	output = home+'/.deepface/weights/vgg_face_weights.h5'
 	
@@ -84,6 +86,9 @@ def loadModel(url = 'https://drive.google.com/uc?id=1CPSeum3HpopfomUEK1gybeuIVoe
 		print(str(err))
 		print("Pre-trained weight could not be loaded.")
 		print("You might try to download the pre-trained weights from the url ", url, " and copy it to the ", output)
+=======
+	model.load_weights('vgg_face_weights.h5')
+>>>>>>> ab08f87535266c7680d1f2d45890d9f2cfac2450
 	
 	#-----------------------------------
 	
