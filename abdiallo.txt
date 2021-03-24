@@ -1,0 +1,7 @@
+git remote add pb https://github.com/abdiallo/deepface.git
+git fetch pb
+git checkout -b abdiallo-master abdiallo
+git pull https://github.com/abdiallo/deepface.git master
+git checkout abdiallo
+git merge --no-ff abdiallo-master
+
