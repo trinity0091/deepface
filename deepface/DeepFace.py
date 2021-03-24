@@ -6,40 +6,6 @@ from os import path
 import numpy as np
 import pandas as pd
 from tqdm import tqdm
-<<<<<<< HEAD
-import pickle
-
-from deepface.basemodels import VGGFace, OpenFace, Facenet, FbDeepFace, DeepID, DlibWrapper, ArcFace, Boosting
-from deepface.extendedmodels import Age, Gender, Race, Emotion
-from deepface.commons import functions, realtime, distance as dst
-
-def build_model(model_name):
-	
-	"""
-	This function builds a deepface model
-	Parameters:
-		model_name (string): face recognition or facial attribute model
-			VGG-Face, Facenet, OpenFace, DeepFace, DeepID for face recognition
-			Age, Gender, Emotion, Race for facial attributes
-	
-	Returns:
-		built deepface model
-	"""
-	
-	models = {
-		'VGG-Face': VGGFace.loadModel, 
-		'OpenFace': OpenFace.loadModel,
-		'Facenet': Facenet.loadModel,
-		'DeepFace': FbDeepFace.loadModel,
-		'DeepID': DeepID.loadModel,
-		'Dlib': DlibWrapper.loadModel,
-		'ArcFace': ArcFace.loadModel,
-		'Emotion': Emotion.loadModel,
-		'Age': Age.loadModel,
-		'Gender': Gender.loadModel,
-		'Race': Race.loadModel
-	}
-=======
 import json
 import keras.backend as K
 
@@ -50,7 +16,6 @@ import keras.backend as K
 from deepface.basemodels import VGGFace, OpenFace, Facenet, FbDeepFace
 from deepface.extendedmodels import Gender, Race
 from deepface.commons import functions, distance as dst
->>>>>>> ab08f87535266c7680d1f2d45890d9f2cfac2450
 
 	model = models.get(model_name)
 	
