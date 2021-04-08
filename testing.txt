@@ -1,0 +1,15 @@
+pip install deepface
+
+pip install --upgrade pip
+/*
+
+root@goorm:/workspace/deepface(build-testing3-pip)# python api/api.py
+Loading Face Recognition Models...
+Loading VGG-Face:   0%|                                                                                             | 0/6 [00:00<?, ?it/s]
+vgg_face_weights.h5 will be downloaded...
+Downloading...
+From: https://drive.google.com/uc?id=1CPSeum3HpopfomUEK1gybeuIVoeJT_Eo
+To: /root/.deepface/weights/vgg_face_weights.h5
+Loading VGG-Face:   0%|
+
+*/
