@@ -2,7 +2,7 @@ import pandas as pd
 import numpy as np
 import itertools
 from sklearn import metrics
-from sklearn.metrics import confusion_matrix,accuracy_score, roc_curve, auc
+from sklearn.metrics import confusion_matrix, accuracy_score, roc_curve, auc, roc_auc_score
 import matplotlib.pyplot as plt
 from tqdm import tqdm
 tqdm.pandas()
@@ -25,7 +25,6 @@ idendities = {
     "Matt": ["img29.jpg", "img30.jpg", "img31.jpg", "img32.jpg", "img33.jpg"],
     "Leonardo": ["img34.jpg", "img35.jpg", "img36.jpg", "img37.jpg"],
     "George": ["img38.jpg", "img39.jpg", "img40.jpg", "img41.jpg"]
-    
 }
 #--------------------------
 #Positives
@@ -33,7 +32,7 @@ idendities = {
 positives = []
 
 for key, values in idendities.items():
-    
+
     #print(key)
     for i in range(0, len(values)-1):
         for j in range(i+1, len(values)):
@@ -45,6 +44,7 @@ for key, values in idendities.items():
 
 positives = pd.DataFrame(positives, columns = ["file_x", "file_y"])
 positives["decision"] = "Yes"
+
 print(positives.shape)
 #--------------------------
 #Negatives
@@ -55,18 +55,18 @@ negatives = []
 
 for i in range(0, len(idendities) - 1):
     for j in range(i+1, len(idendities)):
-        #print(samples_list[i], " vs ",samples_list[j]) 
+        #print(samples_list[i], " vs ",samples_list[j])
         cross_product = itertools.product(samples_list[i], samples_list[j])
         cross_product = list(cross_product)
         #print(cross_product)
-        
+
         for cross_sample in cross_product:
             #print(cross_sample[0], " vs ", cross_sample[1])
             negative = []
             negative.append(cross_sample[0])
             negative.append(cross_sample[1])
             negatives.append(negative)
-			
+
 negatives = pd.DataFrame(negatives, columns = ["file_x", "file_y"])
 negatives["decision"] = "No"
 
@@ -80,24 +80,14 @@ df = pd.concat([positives, negatives]).reset_index(drop = True)
 
 print(df.decision.value_counts())
 
-df.file_x = "deepface/tests/dataset/"+df.file_x
-df.file_y = "deepface/tests/dataset/"+df.file_y
+df.file_x = "dataset/"+df.file_x
+df.file_y = "dataset/"+df.file_y
+
 #--------------------------
 #DeepFace
 
 from deepface import DeepFace
 from deepface.basemodels import VGGFace, OpenFace, Facenet, FbDeepFace
-
-pretrained_models = {}
-
-pretrained_models["VGG-Face"] = VGGFace.loadModel()
-print("VGG-Face loaded")
-pretrained_models["Facenet"] = Facenet.loadModel()
-print("Facenet loaded")
-pretrained_models["OpenFace"] = OpenFace.loadModel() 
-print("OpenFace loaded")
-pretrained_models["DeepFace"] = FbDeepFace.loadModel()
-print("FbDeepFace loaded")
 
 instances = df[["file_x", "file_y"]].values.tolist()
 
@@ -105,13 +95,26 @@ models = ['VGG-Face', 'Facenet', 'OpenFace', 'DeepFace']
 metrics = ['cosine', 'euclidean_l2']
 
 if True:
+
+    pretrained_models = {}
+
+    pretrained_models["VGG-Face"] = VGGFace.loadModel()
+    print("VGG-Face loaded")
+    pretrained_models["Facenet"] = Facenet.loadModel()
+    print("Facenet loaded")
+    pretrained_models["OpenFace"] = OpenFace.loadModel()
+    print("OpenFace loaded")
+    pretrained_models["DeepFace"] = FbDeepFace.loadModel()
+    print("FbDeepFace loaded")
+
     for model in models:
         for metric in metrics:
 
             resp_obj = DeepFace.verify(instances
                                        , model_name = model
                                        , model = pretrained_models[model]
-                                       , distance_metric = metric)
+                                       , distance_metric = metric
+                                       , enforce_detection = False)
 
             distances = []
 
@@ -120,7 +123,7 @@ if True:
                 distances.append(distance)
 
             df['%s_%s' % (model, metric)] = distances
-    
+
     df.to_csv("face-recognition-pivot.csv", index = False)
 else:
     df = pd.read_csv("face-recognition-pivot.csv")
@@ -135,17 +138,18 @@ fig = plt.figure(figsize=(15, 15))
 figure_idx = 1
 for model in models:
     for metric in metrics:
-        
+
         feature = '%s_%s' % (model, metric)
-        
-        ax1 = fig.add_subplot(4, 2, figure_idx)
-        
+
+        ax1 = fig.add_subplot(len(models) * len(metrics), len(metrics), figure_idx)
+
         df[df.decision == "Yes"][feature].plot(kind='kde', title = feature, label = 'Yes', legend = True)
         df[df.decision == "No"][feature].plot(kind='kde', title = feature, label = 'No', legend = True)
-        
+
         figure_idx = figure_idx + 1
 
 plt.show()
+
 #--------------------------
 #Pre-processing for modelling
 
@@ -178,6 +182,10 @@ x_train = df_train.drop(columns=[target_name]).values
 y_test = df_test[target_name].values
 x_test = df_test.drop(columns=[target_name]).values
 
+#print("target distribution:")
+#print(df_train[target_name].value_counts())
+#print(df_test[target_name].value_counts())
+
 #--------------------------
 #LightGBM
 
@@ -195,7 +203,7 @@ params = {
     , 'metric': 'multi_logloss'
 }
 
-gbm = lgb.train(params, lgb_train, num_boost_round=250, early_stopping_rounds = 15 , valid_sets=lgb_test)
+gbm = lgb.train(params, lgb_train, num_boost_round=500, early_stopping_rounds = 50, valid_sets=lgb_test)
 
 gbm.save_model("face-recognition-ensemble-model.txt")
 
@@ -203,6 +211,13 @@ gbm.save_model("face-recognition-ensemble-model.txt")
 #Evaluation
 
 predictions = gbm.predict(x_test)
+
+prediction_classes = []
+for prediction in predictions:
+    prediction_class = np.argmax(prediction)
+    prediction_classes.append(prediction_class)
+
+y_test = list(y_test)
 
 cm = confusion_matrix(y_test, prediction_classes)
 print(cm)
@@ -224,6 +239,7 @@ print("Accuracy: ", 100*accuracy,"%")
 ax = lgb.plot_importance(gbm, max_num_features=20)
 plt.show()
 
+"""
 import os
 os.environ["PATH"] += os.pathsep + 'C:/Program Files (x86)/Graphviz2.38/bin'
 
@@ -232,16 +248,17 @@ plt.rcParams["figure.figsize"] = [20, 20]
 for i in range(0, gbm.num_trees()):
     ax = lgb.plot_tree(gbm, tree_index = i)
     plt.show()
-    
+
     if i == 2:
         break
+"""
 #--------------------------
 #ROC Curve
 
 y_pred_proba = predictions[::,1]
 
-fpr, tpr, _ = metrics.roc_curve(y_test,  y_pred_proba)
-auc = metrics.roc_auc_score(y_test, y_pred_proba)
+fpr, tpr, _ = roc_curve(y_test,  y_pred_proba)
+auc = roc_auc_score(y_test, y_pred_proba)
 
 plt.figure(figsize=(7,3))
 plt.plot(fpr,tpr,label="data 1, auc="+str(auc))

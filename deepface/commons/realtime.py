@@ -12,9 +12,16 @@ os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2'
 from deepface import DeepFace
 from deepface.extendedmodels import Age
 from deepface.commons import functions, realtime, distance as dst
+from deepface.detectors import FaceDetector
 
-def analysis(db_path, model_name, distance_metric, enable_face_analysis = True
-				, source = 0, time_threshold = 5, frame_threshold = 5):
+def analysis(db_path, model_name = 'VGG-Face', detector_backend = 'opencv', distance_metric = 'cosine', enable_face_analysis = True, source = 0, time_threshold = 5, frame_threshold = 5):
+
+	#------------------------
+
+	face_detector = FaceDetector.build_model(detector_backend)
+	print("Detector backend is ", detector_backend)
+
+	#------------------------
 
 	input_shape = (224, 224); input_shape_x = input_shape[0]; input_shape_y = input_shape[1]
 
@@ -43,9 +50,8 @@ def analysis(db_path, model_name, distance_metric, enable_face_analysis = True
 
 		#------------------------
 
-		input_shape = functions.find_input_shape(model)
-		input_shape_x = input_shape[0]
-		input_shape_y = input_shape[1]
+		input_shape = functions.find_target_size(model_name=model_name)
+		input_shape_x = input_shape[0]; input_shape_y = input_shape[1]
 
 		#tuned thresholds for model and metric pair
 		threshold = dst.findThreshold(model_name, distance_metric)
@@ -68,7 +74,7 @@ def analysis(db_path, model_name, distance_metric, enable_face_analysis = True
 
 		toc = time.time()
 
-		print("Facial attibute analysis models loaded in ",toc-tic," seconds")
+		print("Facial attribute analysis models loaded in ",toc-tic," seconds")
 
 	#------------------------
 
@@ -76,15 +82,19 @@ def analysis(db_path, model_name, distance_metric, enable_face_analysis = True
 
 	tic = time.time()
 
-	pbar = tqdm(range(0, len(employees)), desc='Finding embeddings')
+	#-----------------------
 
+	pbar = tqdm(range(0, len(employees)), desc='Finding embeddings')
+	
 	embeddings = []
 	#for employee in employees:
 	for index in pbar:
 		employee = employees[index]
 		pbar.set_description("Finding embedding for %s" % (employee.split("/")[-1]))
 		embedding = []
-		img = functions.preprocess_face(img = employee, target_size = (input_shape_y, input_shape_x), enforce_detection = False)
+
+		#preprocess_face returns single face. this is expected for source images in db.
+		img = functions.preprocess_face(img = employee, target_size = (input_shape_y, input_shape_x), enforce_detection = False, detector_backend = detector_backend)
 		img_representation = model.predict(img)[0,:]
 
 		embedding.append(employee)
@@ -101,12 +111,6 @@ def analysis(db_path, model_name, distance_metric, enable_face_analysis = True
 	#-----------------------
 
 	pivot_img_size = 112 #face recognition result image
-
-	#-----------------------
-
-	opencv_path = functions.get_opencv_path()
-	face_detector_path = opencv_path+"haarcascade_frontalface_default.xml"
-	face_cascade = cv2.CascadeClassifier(face_detector_path)
 
 	#-----------------------
 
@@ -128,12 +132,15 @@ def analysis(db_path, model_name, distance_metric, enable_face_analysis = True
 		#cv2.setWindowProperty('img', cv2.WND_PROP_FULLSCREEN, cv2.WINDOW_FULLSCREEN)
 
 		raw_img = img.copy()
-		resolution = img.shape
-
-		resolution_x = img.shape[1]; resolution_y = img.shape[0]
+		resolution = img.shape; resolution_x = img.shape[1]; resolution_y = img.shape[0]
 
 		if freeze == False:
-			faces = face_cascade.detectMultiScale(img, 1.3, 5)
+
+			try:
+				#faces store list of detected_face and region pair
+				faces = FaceDetector.detect_faces(face_detector, detector_backend, img, align = False)
+			except: #to avoid exception if no face detected
+				faces = []
 
 			if len(faces) == 0:
 				face_included_frames = 0
@@ -142,7 +149,7 @@ def analysis(db_path, model_name, distance_metric, enable_face_analysis = True
 
 		detected_faces = []
 		face_index = 0
-		for (x,y,w,h) in faces:
+		for face, (x, y, w, h), _ in faces:
 			if w > 130: #discard small detected faces
 
 				face_detected = True
@@ -195,7 +202,7 @@ def analysis(db_path, model_name, distance_metric, enable_face_analysis = True
 
 						if enable_face_analysis == True:
 
-							gray_img = functions.preprocess_face(img = custom_face, target_size = (48, 48), grayscale = True, enforce_detection = False)
+							gray_img = functions.preprocess_face(img = custom_face, target_size = (48, 48), grayscale = True, enforce_detection = False, detector_backend = 'opencv')
 							emotion_labels = ['Angry', 'Disgust', 'Fear', 'Happy', 'Sad', 'Surprise', 'Neutral']
 							emotion_predictions = emotion_model.predict(gray_img)[0,:]
 							sum_of_predictions = emotion_predictions.sum()
@@ -273,7 +280,7 @@ def analysis(db_path, model_name, distance_metric, enable_face_analysis = True
 
 							#-------------------------------
 
-							face_224 = functions.preprocess_face(img = custom_face, target_size = (224, 224), grayscale = False, enforce_detection = False)
+							face_224 = functions.preprocess_face(img = custom_face, target_size = (224, 224), grayscale = False, enforce_detection = False, detector_backend = 'opencv')
 
 							age_predictions = age_model.predict(face_224)[0,:]
 							apparent_age = Age.findApparentAge(age_predictions)
@@ -328,7 +335,7 @@ def analysis(db_path, model_name, distance_metric, enable_face_analysis = True
 						#-------------------------------
 						#face recognition
 
-						custom_face = functions.preprocess_face(img = custom_face, target_size = (input_shape_y, input_shape_x), enforce_detection = False)
+						custom_face = functions.preprocess_face(img = custom_face, target_size = (input_shape_y, input_shape_x), enforce_detection = False, detector_backend = 'opencv')
 
 						#check preprocess_face function handled
 						if custom_face.shape[1:3] == input_shape:

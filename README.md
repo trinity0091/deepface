@@ -1,116 +1,259 @@
 # deepface
 
-[![Downloads](https://pepy.tech/badge/deepface)](https://pepy.tech/project/deepface)
-[![Stars](https://img.shields.io/github/stars/serengil/deepface)](https://github.com/serengil/deepface)
+<div align="center">
+
+[![PyPI Downloads](https://static.pepy.tech/personalized-badge/deepface?period=total&units=international_system&left_color=grey&right_color=blue&left_text=pypi%20downloads)](https://pepy.tech/project/deepface)
+[![Conda Downloads](https://img.shields.io/conda/dn/conda-forge/deepface?color=green&label=conda%20downloads)](https://anaconda.org/conda-forge/deepface)
+[![Stars](https://img.shields.io/github/stars/serengil/deepface?color=yellow&style=flat)](https://github.com/serengil/deepface/stargazers)
 [![License](http://img.shields.io/:license-MIT-green.svg?style=flat)](https://github.com/serengil/deepface/blob/master/LICENSE)
-[![Patreon](https://img.shields.io/:support-patreon-orange.svg?style=flat)](https://www.patreon.com/bePatron?u=31795557&redirect_uri=https%3A%2F%2Fgithub.com%2Fserengil%2Fdeepface)
+[![Support me on Patreon](https://img.shields.io/endpoint.svg?url=https%3A%2F%2Fshieldsio-patreon.vercel.app%2Fapi%3Fusername%3Dserengil%26type%3Dpatrons&style=flat)](https://www.patreon.com/serengil?repo=deepface)
+[![GitHub Sponsors](https://img.shields.io/github/sponsors/serengil?logo=GitHub&color=lightgray)](https://github.com/sponsors/serengil)
+
+[![DOI](http://img.shields.io/:DOI-10.1109/ASYU50717.2020.9259802-blue.svg?style=flat)](https://doi.org/10.1109/ASYU50717.2020.9259802)
+[![DOI](http://img.shields.io/:DOI-10.1109/ICEET53442.2021.9659697-blue.svg?style=flat)](https://doi.org/10.1109/ICEET53442.2021.9659697)
+
+</div>
 
 <p align="center"><img src="https://raw.githubusercontent.com/serengil/deepface/master/icon/deepface-icon-labeled.png" width="200" height="240"></p>
 
-Deepface is a lightweight [face recognition](https://sefiks.com/2018/08/06/deep-face-recognition-with-keras/) and facial attribute analysis ([age](https://sefiks.com/2019/02/13/apparent-age-and-gender-prediction-in-keras/), [gender](https://sefiks.com/2019/02/13/apparent-age-and-gender-prediction-in-keras/), [emotion](https://sefiks.com/2018/01/01/facial-expression-recognition-with-keras/) and [race](https://sefiks.com/2019/11/11/race-and-ethnicity-prediction-in-keras/)) framework for python. It is a hybrid face recognition framework wrapping **state-of-the-art** models: [`VGG-Face`](https://sefiks.com/2018/08/06/deep-face-recognition-with-keras/), [`Google FaceNet`](https://sefiks.com/2018/09/03/face-recognition-with-facenet-in-keras/), [`OpenFace`](https://sefiks.com/2019/07/21/face-recognition-with-openface-in-keras/), [`Facebook DeepFace`](https://sefiks.com/2020/02/17/face-recognition-with-facebook-deepface-in-keras/), [`DeepID`](https://sefiks.com/2020/06/16/face-recognition-with-deepid-in-keras/), [`ArcFace`](https://sefiks.com/2020/12/14/deep-face-recognition-with-arcface-in-keras-and-python/) and [`Dlib`](https://sefiks.com/2020/07/11/face-recognition-with-dlib-in-python/). The library is mainly based on Keras and TensorFlow.
+Deepface is a lightweight [face recognition](https://sefiks.com/2018/08/06/deep-face-recognition-with-keras/) and facial attribute analysis ([age](https://sefiks.com/2019/02/13/apparent-age-and-gender-prediction-in-keras/), [gender](https://sefiks.com/2019/02/13/apparent-age-and-gender-prediction-in-keras/), [emotion](https://sefiks.com/2018/01/01/facial-expression-recognition-with-keras/) and [race](https://sefiks.com/2019/11/11/race-and-ethnicity-prediction-in-keras/)) framework for python. It is a hybrid face recognition framework wrapping **state-of-the-art** models: [`VGG-Face`](https://sefiks.com/2018/08/06/deep-face-recognition-with-keras/), [`Google FaceNet`](https://sefiks.com/2018/09/03/face-recognition-with-facenet-in-keras/), [`OpenFace`](https://sefiks.com/2019/07/21/face-recognition-with-openface-in-keras/), [`Facebook DeepFace`](https://sefiks.com/2020/02/17/face-recognition-with-facebook-deepface-in-keras/), [`DeepID`](https://sefiks.com/2020/06/16/face-recognition-with-deepid-in-keras/), [`ArcFace`](https://sefiks.com/2020/12/14/deep-face-recognition-with-arcface-in-keras-and-python/), [`Dlib`](https://sefiks.com/2020/07/11/face-recognition-with-dlib-in-python/) and `SFace`.
 
-## Installation
+Experiments show that human beings have 97.53% accuracy on facial recognition tasks whereas those models already reached and passed that accuracy level.
 
-The easiest way to install deepface is to download it from [`PyPI`](https://pypi.org/project/deepface/).
+## Installation [![PyPI](https://img.shields.io/pypi/v/deepface.svg)](https://pypi.org/project/deepface/) [![Conda](https://img.shields.io/conda/vn/conda-forge/deepface.svg)](https://anaconda.org/conda-forge/deepface)
 
-```python
-pip install deepface
+The easiest way to install deepface is to download it from [`PyPI`](https://pypi.org/project/deepface/). It's going to install the library itself and its prerequisites as well.
+
+```shell
+$ pip install deepface
 ```
 
-## Face Recognition 
+Secondly, DeepFace is also available at [`Conda`](https://anaconda.org/conda-forge/deepface). You can alternatively install the package via conda.
 
-A modern [**face recognition pipeline**](https://sefiks.com/2020/05/01/a-gentle-introduction-to-face-recognition-in-deep-learning/) consists of 4 common stages: [detect](https://sefiks.com/2020/08/25/deep-face-detection-with-opencv-in-python/), [align](https://sefiks.com/2020/02/23/face-alignment-for-face-recognition-in-python-within-opencv/), [represent](https://sefiks.com/2018/08/06/deep-face-recognition-with-keras/) and [verify](https://sefiks.com/2020/05/22/fine-tuning-the-threshold-in-face-recognition/). Deepface handles all these common stages in the background. You can just call its verification, find or analysis function in its interface with a single line of code.
+```shell
+$ conda install -c conda-forge deepface
+```
 
-**Face Verification** - [`Demo`](https://youtu.be/KRCvkNCOphE)
+Thirdly, you can install deepface from its source code.
 
-Verification function under the deepface interface offers to verify face pairs as same person or different persons. You should pass face pairs as array instead of calling verify function in a for loop for the best practice. This will speed the function up dramatically and reduce the allocated memory.
+```shell
+$ git clone https://github.com/serengil/deepface.git
+$ cd deepface
+$ pip install -e .
+```
+
+Then you will be able to import the library and use its functionalities.
 
 ```python
 from deepface import DeepFace
-result  = DeepFace.verify("img1.jpg", "img2.jpg")
-#results = DeepFace.verify([['img1.jpg', 'img2.jpg'], ['img1.jpg', 'img3.jpg']])
-print("Is verified: ", result["verified"])
+```
+
+**Facial Recognition** - [`Demo`](https://youtu.be/WnUVYQP4h44)
+
+A modern [**face recognition pipeline**](https://sefiks.com/2020/05/01/a-gentle-introduction-to-face-recognition-in-deep-learning/) consists of 5 common stages: [detect](https://sefiks.com/2020/08/25/deep-face-detection-with-opencv-in-python/), [align](https://sefiks.com/2020/02/23/face-alignment-for-face-recognition-in-python-within-opencv/), [normalize](https://sefiks.com/2020/11/20/facial-landmarks-for-face-recognition-with-dlib/), [represent](https://sefiks.com/2018/08/06/deep-face-recognition-with-keras/) and [verify](https://sefiks.com/2020/05/22/fine-tuning-the-threshold-in-face-recognition/). While Deepface handles all these common stages in the background, you don’t need to acquire in-depth knowledge about all the processes behind it. You can just call its verification, find or analysis function with a single line of code.
+
+**Face Verification** - [`Demo`](https://youtu.be/KRCvkNCOphE)
+
+This function verifies face pairs as same person or different persons. It expects exact image paths as inputs. Passing numpy or base64 encoded images is also welcome. Then, it is going to return a dictionary and you should check just its verified key.
+
+```python
+result = DeepFace.verify(img1_path = "img1.jpg", img2_path = "img2.jpg")
 ```
 
 <p align="center"><img src="https://raw.githubusercontent.com/serengil/deepface/master/icon/stock-1.jpg" width="95%" height="95%"></p>
 
-Herein, face pairs could be exact image paths, numpy array or base64 encoded images.
+Verification function can also handle many faces in the face pairs. In this case, the most similar faces will be compared.
 
-**Face recognition** - [`Demo`](https://youtu.be/Hrjp-EStM_s) 
+<p align="center"><img src="https://raw.githubusercontent.com/serengil/deepface/master/icon/verify-many-faces.jpg" width="95%" height="95%"></p>
 
-Face recognition requires to apply face verification several times. Herein, deepface offers an out-of-the-box find function to handle this action. It stores the representations of your facial database and you don't have to find it again and again. In this way, you can apply [face recognition](https://sefiks.com/2020/05/25/large-scale-face-recognition-for-deep-learning/) data set as well. The find function returns pandas data frame if a single image path is passed, and it returns list of pandas data frames if list of image paths are passed.
+**Face recognition** - [`Demo`](https://youtu.be/Hrjp-EStM_s)
+
+[Face recognition](https://sefiks.com/2020/05/25/large-scale-face-recognition-for-deep-learning/) requires applying face verification many times. Herein, deepface has an out-of-the-box find function to handle this action. It's going to look for the identity of input image in the database path and it will return list of pandas data frame as output. Result is going to be the size of faces appearing in the source image. Besides, target images in the database can have many faces as well.
+
 
 ```python
-from deepface import DeepFace
-import pandas as pd
-df = DeepFace.find(img_path = "img1.jpg", db_path = "C:/workspace/my_db")
-#dfs = DeepFace.find(img_path = ["img1.jpg", "img2.jpg"], db_path = "C:/workspace/my_db")
+dfs = DeepFace.find(img_path = "img1.jpg", db_path = "C:/workspace/my_db")
 ```
 
 <p align="center"><img src="https://raw.githubusercontent.com/serengil/deepface/master/icon/stock-6-v2.jpg" width="95%" height="95%"></p>
 
-Herein, image path argument could be exact image path, numpy array or base64 encoded image. Also, you are expected to store your facial image data base in the folder that you passed to the db_path argument with .jpg or .png extension. 
+**Embeddings**
 
-**Large Scale Face Recognition** - [`Demo with Elasticsearch`](https://youtu.be/i4GvuOmzKzo), [`Demo with Spotify Annoy`](https://youtu.be/Jpxm914o2xk)
+Face recognition models basically represent facial images as multi-dimensional vectors. Sometimes, you need those embedding vectors directly. DeepFace comes with a dedicated representation function. Represent function returns a list of embeddings. Result is going to be the size of faces appearing in the image path.
 
-Notice that face recognition has O(n) time complexity and this becomes problematic for millions level data and limited hardware. If you have a really strong database, then you use [relational databases and regular SQL](https://sefiks.com/2021/02/06/deep-face-recognition-with-sql/). Besides, you can store facial embeddings in nosql databases. That's a better way. In this way, you can have the power of the map reduce technology. Here, you can find some implementation experiments with [mongoDb](https://sefiks.com/2021/01/22/deep-face-recognition-with-mongodb/), [Cassandra](https://sefiks.com/2021/01/24/deep-face-recognition-with-cassandra/) and [Hadoop](https://sefiks.com/2021/01/31/deep-face-recognition-with-hadoop-and-spark/).
+```python
+embedding_objs = DeepFace.represent(img_path = "img.jpg")
+```
 
-Herein, approximate nearest neighbor (a-nn) algorithm reduces the time complexity dramatically. [Spotify Annoy](https://sefiks.com/2020/09/16/large-scale-face-recognition-with-spotify-annoy/), [Facebook Faiss](https://sefiks.com/2020/09/17/large-scale-face-recognition-with-facebook-faiss/) and [NMSLIB](https://sefiks.com/2020/09/19/large-scale-face-recognition-with-nmslib/) are amazing a-nn libraries. Besides, [Elasticsearch](https://sefiks.com/2020/11/27/large-scale-face-recognition-with-elasticsearch/) wraps an a-nn algorithm and it offers highly scalability feature. You should run deepface within those a-nn frameworks if you have really large scale data sets.
+This function returns an array as embedding. The size of the embedding array would be different based on the model name. For instance, VGG-Face is the default model and it represents facial images as 2622 dimensional vectors.
+
+```python
+embedding = embedding_objs[0]["embedding"]
+assert isinstance(embedding, list)
+assert model_name = "VGG-Face" and len(embedding) == 2622
+```
+
+Here, embedding is also [plotted](https://sefiks.com/2020/05/01/a-gentle-introduction-to-face-recognition-in-deep-learning/) with 2622 slots horizontally. Each slot is corresponding to a dimension value in the embedding vector and dimension value is explained in the colorbar on the right. Similar to 2D barcodes, vertical dimension stores no information in the illustration.
+
+<p align="center"><img src="https://raw.githubusercontent.com/serengil/deepface/master/icon/embedding.jpg" width="95%" height="95%"></p>
 
 **Face recognition models** - [`Demo`](https://youtu.be/i_MOwvhbLdI)
 
-Deepface is a **hybrid** face recognition package. It currently wraps the **state-of-the-art** face recognition models: [`VGG-Face`](https://sefiks.com/2018/08/06/deep-face-recognition-with-keras/) , [`Google FaceNet`](https://sefiks.com/2018/09/03/face-recognition-with-facenet-in-keras/), [`OpenFace`](https://sefiks.com/2019/07/21/face-recognition-with-openface-in-keras/), [`Facebook DeepFace`](https://sefiks.com/2020/02/17/face-recognition-with-facebook-deepface-in-keras/), [`DeepID`](https://sefiks.com/2020/06/16/face-recognition-with-deepid-in-keras/), [`ArcFace`](https://sefiks.com/2020/12/14/deep-face-recognition-with-arcface-in-keras-and-python/) and [`Dlib`](https://sefiks.com/2020/07/11/face-recognition-with-dlib-in-python/). The default configuration verifies faces with VGG-Face model. You can set the base model while verification as illustared below.
+Deepface is a **hybrid** face recognition package. It currently wraps many **state-of-the-art** face recognition models: [`VGG-Face`](https://sefiks.com/2018/08/06/deep-face-recognition-with-keras/) , [`Google FaceNet`](https://sefiks.com/2018/09/03/face-recognition-with-facenet-in-keras/), [`OpenFace`](https://sefiks.com/2019/07/21/face-recognition-with-openface-in-keras/), [`Facebook DeepFace`](https://sefiks.com/2020/02/17/face-recognition-with-facebook-deepface-in-keras/), [`DeepID`](https://sefiks.com/2020/06/16/face-recognition-with-deepid-in-keras/), [`ArcFace`](https://sefiks.com/2020/12/14/deep-face-recognition-with-arcface-in-keras-and-python/), [`Dlib`](https://sefiks.com/2020/07/11/face-recognition-with-dlib-in-python/) and `SFace`. The default configuration uses VGG-Face model.
 
 ```python
-models = ["VGG-Face", "Facenet", "OpenFace", "DeepFace", "DeepID", "ArcFace", "Dlib"]
-for model in models:
-   result = DeepFace.verify("img1.jpg", "img2.jpg", model_name = model)
-   df = DeepFace.find(img_path = "img1.jpg", db_path = "C:/workspace/my_db", model_name = model)
+models = [
+  "VGG-Face", 
+  "Facenet", 
+  "Facenet512", 
+  "OpenFace", 
+  "DeepFace", 
+  "DeepID", 
+  "ArcFace", 
+  "Dlib", 
+  "SFace",
+]
+
+#face verification
+result = DeepFace.verify(img1_path = "img1.jpg", 
+      img2_path = "img2.jpg", 
+      model_name = models[0]
+)
+
+#face recognition
+dfs = DeepFace.find(img_path = "img1.jpg",
+      db_path = "C:/workspace/my_db", 
+      model_name = models[1]
+)
+
+#embeddings
+embedding_objs = DeepFace.represent(img_path = "img.jpg", 
+      model_name = models[2]
+)
 ```
 
-FaceNet, VGG-Face, ArcFace and Dlib [overperforms](https://youtu.be/i_MOwvhbLdI) than OpenFace, DeepFace and DeepID based on experiments. Supportively, FaceNet got 99.65%; ArcFace got 99.40%; Dlib got 99.38%; VGG-Face got 98.78%; OpenFace got 93.80% accuracy scores on [LFW data set](https://sefiks.com/2020/08/27/labeled-faces-in-the-wild-for-face-recognition/) whereas human beings could have just 97.53%.
+<p align="center"><img src="https://raw.githubusercontent.com/serengil/deepface/master/icon/model-portfolio-v8.jpg" width="95%" height="95%"></p>
+
+FaceNet, VGG-Face, ArcFace and Dlib are [overperforming](https://youtu.be/i_MOwvhbLdI) ones based on experiments. You can find out the scores of those models below on both [Labeled Faces in the Wild](https://sefiks.com/2020/08/27/labeled-faces-in-the-wild-for-face-recognition/) and YouTube Faces in the Wild data sets declared by its creators.
+
+| Model | LFW Score | YTF Score |
+| ---   | --- | --- |
+| Facenet512 | 99.65% | - |
+| SFace | 99.60% | - |
+| ArcFace | 99.41% | - |
+| Dlib | 99.38 % | - |
+| Facenet | 99.20% | - |
+| VGG-Face | 98.78% | 97.40% |
+| *Human-beings* | *97.53%* | - |
+| OpenFace | 93.80% | - |
+| DeepID | - | 97.05% |
 
 **Similarity**
 
-Face recognition models are regular [convolutional neural networks](https://sefiks.com/2018/03/23/convolutional-autoencoder-clustering-images-with-neural-networks/) and they are responsible to represent faces as vectors. Decision of verification is based on the distance between vectors. We can classify pairs if its distance is less than a [threshold](https://sefiks.com/2020/05/22/fine-tuning-the-threshold-in-face-recognition/). 
+Face recognition models are regular [convolutional neural networks](https://sefiks.com/2018/03/23/convolutional-autoencoder-clustering-images-with-neural-networks/) and they are responsible to represent faces as vectors. We expect that a face pair of same person should be [more similar](https://sefiks.com/2020/05/22/fine-tuning-the-threshold-in-face-recognition/) than a face pair of different persons.
 
-Distance could be found by different metrics such as [Cosine Similarity](https://sefiks.com/2018/08/13/cosine-similarity-in-machine-learning/), Euclidean Distance and L2 form. The default configuration finds the cosine similarity. You can alternatively set the similarity metric while verification as demostratred below.
+Similarity could be calculated by different metrics such as [Cosine Similarity](https://sefiks.com/2018/08/13/cosine-similarity-in-machine-learning/), Euclidean Distance and L2 form. The default configuration uses cosine similarity.
 
 ```python
 metrics = ["cosine", "euclidean", "euclidean_l2"]
-for metric in metrics:
-   result = DeepFace.verify("img1.jpg", "img2.jpg", distance_metric = metric)
-   df = DeepFace.find(img_path = "img1.jpg", db_path = "C:/workspace/my_db", distance_metric = metric)
+
+#face verification
+result = DeepFace.verify(img1_path = "img1.jpg", 
+          img2_path = "img2.jpg", 
+          distance_metric = metrics[1]
+)
+
+#face recognition
+dfs = DeepFace.find(img_path = "img1.jpg", 
+          db_path = "C:/workspace/my_db", 
+          distance_metric = metrics[2]
+)
 ```
 
 Euclidean L2 form [seems](https://youtu.be/i_MOwvhbLdI) to be more stable than cosine and regular Euclidean distance based on experiments.
 
 **Facial Attribute Analysis** - [`Demo`](https://youtu.be/GT2UeN85BdA)
 
-Deepface also offers facial attribute analysis including [`age`](https://sefiks.com/2019/02/13/apparent-age-and-gender-prediction-in-keras/), [`gender`](https://sefiks.com/2019/02/13/apparent-age-and-gender-prediction-in-keras/), [`facial expression`](https://sefiks.com/2018/01/01/facial-expression-recognition-with-keras/) (including angry, fear, neutral, sad, disgust, happy and surprise) and [`race`](https://sefiks.com/2019/11/11/race-and-ethnicity-prediction-in-keras/) (including asian, white, middle eastern, indian, latino and black) predictions. Analysis function under the DeepFace interface is used to find demography of a face. 
+Deepface also comes with a strong facial attribute analysis module including [`age`](https://sefiks.com/2019/02/13/apparent-age-and-gender-prediction-in-keras/), [`gender`](https://sefiks.com/2019/02/13/apparent-age-and-gender-prediction-in-keras/), [`facial expression`](https://sefiks.com/2018/01/01/facial-expression-recognition-with-keras/) (including angry, fear, neutral, sad, disgust, happy and surprise) and [`race`](https://sefiks.com/2019/11/11/race-and-ethnicity-prediction-in-keras/) (including asian, white, middle eastern, indian, latino and black) predictions. Result is going to be the size of faces appearing in the source image.
 
 ```python
-from deepface import DeepFace
-obj = DeepFace.analyze(img_path = "img4.jpg", actions = ['age', 'gender', 'race', 'emotion'])
-#objs = DeepFace.analyze(["img1.jpg", "img2.jpg", "img3.jpg"]) #analyzing multiple faces same time
-print(obj["age"]," years old ",obj["dominant_race"]," ",obj["dominant_emotion"]," ", obj["gender"])
+objs = DeepFace.analyze(img_path = "img4.jpg", 
+        actions = ['age', 'gender', 'race', 'emotion']
+)
 ```
 
 <p align="center"><img src="https://raw.githubusercontent.com/serengil/deepface/master/icon/stock-2.jpg" width="95%" height="95%"></p>
 
 Age model got ± 4.65 MAE; gender model got 97.44% accuracy, 96.29% precision and 95.05% recall as mentioned in its [tutorial](https://sefiks.com/2019/02/13/apparent-age-and-gender-prediction-in-keras/).
 
-Herein, image path argument could be exact image path, numpy array or base64 encoded image.
 
-**Streaming and Real Time Analysis** - [`Demo`](https://youtu.be/-c9sSJcx6wI)
+**Face Detectors** - [`Demo`](https://youtu.be/GZ2p2hj2H5k)
 
-You can run deepface for real time videos as well. 
+Face detection and alignment are important early stages of a modern face recognition pipeline. Experiments show that just alignment increases the face recognition accuracy almost 1%. [`OpenCV`](https://sefiks.com/2020/02/23/face-alignment-for-face-recognition-in-python-within-opencv/), [`SSD`](https://sefiks.com/2020/08/25/deep-face-detection-with-opencv-in-python/), [`Dlib`](https://sefiks.com/2020/07/11/face-recognition-with-dlib-in-python/),  [`MTCNN`](https://sefiks.com/2020/09/09/deep-face-detection-with-mtcnn-in-python/), [`RetinaFace`](https://sefiks.com/2021/04/27/deep-face-detection-with-retinaface-in-python/) and [`MediaPipe`](https://sefiks.com/2022/01/14/deep-face-detection-with-mediapipe/) detectors are wrapped in deepface.
 
-Calling stream function under the DeepFace interface will access your webcam and apply both face recognition and facial attribute analysis. Stream function expects a database folder including face images. VGG-Face is the default face recognition model and cosine similarity is the default distance metric similar to verify function. The function starts to analyze if it can focus a face sequantially 5 frames. Then, it shows results 5 seconds.
+<p align="center"><img src="https://raw.githubusercontent.com/serengil/deepface/master/icon/detector-portfolio-v3.jpg" width="95%" height="95%"></p>
+
+All deepface functions accept an optional detector backend input argument. You can switch among those detectors with this argument. OpenCV is the default detector.
 
 ```python
-from deepface import DeepFace
-DeepFace.stream("C:/User/Sefik/Desktop/database")
+backends = [
+  'opencv', 
+  'ssd', 
+  'dlib', 
+  'mtcnn', 
+  'retinaface', 
+  'mediapipe'
+]
+
+#face verification
+obj = DeepFace.verify(img1_path = "img1.jpg", 
+        img2_path = "img2.jpg", 
+        detector_backend = backends[0]
+)
+
+#face recognition
+dfs = DeepFace.find(img_path = "img.jpg", 
+        db_path = "my_db", 
+        detector_backend = backends[1]
+)
+
+#embeddings
+embedding_objs = DeepFace.represent(img_path = "img.jpg", 
+        detector_backend = backends[2]
+)
+
+#facial analysis
+demographies = DeepFace.analyze(img_path = "img4.jpg", 
+        detector_backend = backends[3]
+)
+
+#face detection and alignment
+face_objs = DeepFace.extract_faces(img_path = "img.jpg", 
+        target_size = (224, 224), 
+        detector_backend = backends[4]
+)
+```
+
+Face recognition models are actually CNN models and they expect standard sized inputs. So, resizing is required before representation. To avoid deformation, deepface adds black padding pixels according to the target size argument after detection and alignment.
+
+<p align="center"><img src="https://raw.githubusercontent.com/serengil/deepface/master/icon/deepface-detectors-v3.jpg" width="90%" height="90%"></p>
+
+[RetinaFace](https://sefiks.com/2021/04/27/deep-face-detection-with-retinaface-in-python/) and [MTCNN](https://sefiks.com/2020/09/09/deep-face-detection-with-mtcnn-in-python/) seem to overperform in detection and alignment stages but they are much slower. If the speed of your pipeline is more important, then you should use opencv or ssd. On the other hand, if you consider the accuracy, then you should use retinaface or mtcnn.
+
+The performance of RetinaFace is very satisfactory even in the crowd as seen in the following illustration. Besides, it comes with an incredible facial landmark detection performance. Highlighted red points show some facial landmarks such as eyes, nose and mouth. That's why, alignment score of RetinaFace is high as well.
+
+<p align="center"><img src="https://raw.githubusercontent.com/serengil/deepface/master/icon/retinaface-results.jpeg" width="90%" height="90%">
+<br><em>The Yellow Angels - Fenerbahce Women's Volleyball Team</em>
+</p>
+
+You can find out more about RetinaFace on this [repo](https://github.com/serengil/retinaface).
+
+**Real Time Analysis** - [`Demo`](https://youtu.be/-c9sSJcx6wI)
+
+You can run deepface for real time videos as well. Stream function will access your webcam and apply both face recognition and facial attribute analysis. The function starts to analyze a frame if it can focus a face sequentially 5 frames. Then, it shows results 5 seconds.
+
+```python
+DeepFace.stream(db_path = "C:/User/Sefik/Desktop/database")
 ```
 
 <p align="center"><img src="https://raw.githubusercontent.com/serengil/deepface/master/icon/stock-3.jpg" width="90%" height="90%"></p>
@@ -127,17 +270,6 @@ user
 │   │   ├── Bob.jpg
 ```
 
-**Ensemble learning for face recognition** - [`Demo`](https://youtu.be/EIBJJJ0ECXU)
-
-A face recognition task can be handled by several models and similarity metrics. Herein, deepface offers a [special boosting and combination solution](https://sefiks.com/2020/06/03/mastering-face-recognition-with-ensemble-learning/) to improve the accuracy of a face recognition task. This provides a huge improvement on accuracy metrics. Human beings could have 97.53% score for face recognition tasks whereas this ensemble method passes the human level accuracy and gets 98.57% accuracy. On the other hand, this runs much slower than single models.
-
-<p align="center"><img src="https://raw.githubusercontent.com/serengil/deepface/master/icon/stock-4.jpg" width="70%" height="70%"></p>
-
-```python
-resp_obj = DeepFace.verify("img1.jpg", "img2.jpg", model_name = "Ensemble")
-df = DeepFace.find(img_path = "img1.jpg", db_path = "my_db", model_name = "Ensemble")
-```
-
 **API** - [`Demo`](https://youtu.be/HeKCQ6U9XmI)
 
 Deepface serves an API as well. You can clone [`/api/api.py`](https://github.com/serengil/deepface/tree/master/api/api.py) and pass it to python command as an argument. This will get a rest service up. In this way, you can call deepface from an external system such as mobile app or web.
@@ -148,89 +280,103 @@ python api.py
 
 <p align="center"><img src="https://raw.githubusercontent.com/serengil/deepface/master/icon/deepface-api.jpg" width="90%" height="90%"></p>
 
-The both face recognition and facial attribute analysis are covered in the API. You are expected to call these functions as http post methods. Service endpoints will be `http://127.0.0.1:5000/verify` for face recognition and `http://127.0.0.1:5000/analyze` for facial attribute analysis. You should pass input images as base64 encoded string in this case. [Here](https://github.com/serengil/deepface/tree/master/api), you can find a postman project.
+Face recognition, facial attribute analysis and vector representation functions are covered in the API. You are expected to call these functions as http post methods. Service endpoints will be `http://127.0.0.1:5000/verify` for face recognition, `http://127.0.0.1:5000/analyze` for facial attribute analysis, and `http://127.0.0.1:5000/represent` for vector representation. You should pass input images as base64 encoded string in this case. [Here](https://github.com/serengil/deepface/tree/master/api), you can find a postman project.
 
-**Face Detectors** - [`Demo`](https://youtu.be/GZ2p2hj2H5k)
+**Dockerized Service**
 
-Face detection and alignment are early stages of a modern face recognition pipeline. [`OpenCV`](https://sefiks.com/2020/02/23/face-alignment-for-face-recognition-in-python-within-opencv/), [`SSD`](https://sefiks.com/2020/08/25/deep-face-detection-with-opencv-in-python/), [`Dlib`](https://sefiks.com/2020/07/11/face-recognition-with-dlib-in-python/) and [`MTCNN`](https://sefiks.com/2020/09/09/deep-face-detection-with-mtcnn-in-python/) methods are wrapped in deepface as a detector. You can optionally pass a custom detector to functions in deepface interface. MTCNN is the default detector if you won't pass any detector.
+You can deploy the deepface api on a kubernetes cluster with docker. The following [shell script](https://github.com/serengil/deepface/blob/master/scripts/dockerize.sh) will serve deepface on `localhost:5000`. You need to re-configure the [Dockerfile](https://github.com/serengil/deepface/blob/master/Dockerfile) if you want to change the port. Then, even if you do not have a development environment, you will be able to consume deepface services such as verify and analyze. You can also access the inside of the docker image to run deepface related commands. Please follow the instructions in the [shell script](https://github.com/serengil/deepface/blob/master/scripts/dockerize.sh).
 
-```python
-backends = ['opencv', 'ssd', 'dlib', 'mtcnn']
-for backend in backends:
-   #face detection and alignment
-   detected_face = DeepFace.detectFace("img.jpg", detector_backend = backend)
-   
-   #face verification
-   obj = DeepFace.verify("img1.jpg", "img2.jpg", detector_backend = backend)
-   
-   #face recognition
-   df = DeepFace.find(img_path = "img.jpg", db_path = "my_db", detector_backend = backend)
-   
-   #facial analysis
-   demography = DeepFace.analyze("img4.jpg", detector_backend = backend)
+```shell
+cd scripts
+./dockerize.sh
 ```
 
-[MTCNN](https://sefiks.com/2020/09/09/deep-face-detection-with-mtcnn-in-python/) seems to overperform in detection and alignment stages but it is slower than [SSD](https://sefiks.com/2020/08/25/deep-face-detection-with-opencv-in-python/).
+<p align="center"><img src="https://raw.githubusercontent.com/serengil/deepface/master/icon/deepface-dockerized-v2.jpg" width="50%" height="50%"></p>
 
-**Passing pre-built face recognition models**
+**Command Line Interface**
 
-You can build models once and pass to deepface functions as well. This speeds you up if you are going to call deepface several times.
+DeepFace comes with a command line interface as well. You are able to access its functions in command line as shown below. The command deepface expects the function name as 1st argument and function arguments thereafter.
 
-```python
-#face recognition
-models = ['VGG-Face', 'Facenet', 'OpenFace', 'DeepFace', 'DeepID', 'Dlib']
-for model_name in models:
-   model = DeepFace.build_model(model_name)
-   DeepFace.verify("img1.jpg", "img2.jpg", model_name = model_name, model = model)
+```shell
+#face verification
+$ deepface verify -img1_path tests/dataset/img1.jpg -img2_path tests/dataset/img2.jpg
 
 #facial analysis
-models = {}
-actions = ['Age', 'Gender', 'Emotion', 'Race']
-for action in actions:
-   models[action.lower()] = DeepFace.build_model(action)
-DeepFace.analyze("img1.jpg", models=models)
+$ deepface analyze -img_path tests/dataset/img1.jpg
 ```
 
-## FAQ and Troubleshooting
+You can also run these commands if you are running deepface with docker. Please follow the instructions in the [shell script](https://github.com/serengil/deepface/blob/master/scripts/dockerize.sh#L17).
 
-Pre-trained weights of custom models will be downloaded from Google Drive source to your environment once. Download limit of my Google Drive account might be exceeded sometimes. In this case, you might have an exception like "Too many users have viewed or downloaded this file recently. Please try accessing the file again later". You can still download the pre-trained weights from Google Drive manually. You should then download the pre-trained weights to {HOME_FOLDER}/.deepface/weights folder. It won't try to download the weight file if it exists in the weights folder. You can find out your HOME_FOLDER as shown below.
+**Tech Stack** - [`Vlog`](https://youtu.be/R8fHsL7u3eE), [`Tutorial`](https://sefiks.com/2021/03/31/tech-stack-recommendations-for-face-recognition/)
 
-```python
-from pathlib import Path
-home = str(Path.home())
-print("HOME_FOLDER is ",home)
-```
+Face recognition models represent facial images as vector embeddings. The idea behind facial recognition is that vectors should be more similar for same person than different persons. The question is that where and how to store facial embeddings in a large scale system. Tech stack is vast to store vector embeddings. To determine the right tool, you should consider your task such as face verification or face recognition, priority such as speed or confidence, and also data size.
 
-## Contribution
+<p align="center"><img src="https://raw.githubusercontent.com/serengil/deepface/master/icon/tech-stack-v2.jpg" width="90%" height="90%"></p>
 
-Pull requests are welcome. You should run the unit tests locally by running [`test/unit_tests.py`](https://github.com/serengil/deepface/blob/master/tests/unit_tests.py). Please share the unit test result logs in the PR. Deepface is currently compatible with TF 1 and 2 versions. Change requests should satisfy those requirements both.
+## Derived applications
+
+You can use deepface not just for facial recognition tasks. It's very common to use DeepFace for entertainment purposes. For instance, celebrity look-alike prediction and parental look-alike prediction tasks can be done with DeepFace!
+
+**Parental Look-Alike Prediction** - [`Vlog`](https://youtu.be/nza4tmi9vhE), [`Tutorial`](https://sefiks.com/2022/12/22/decide-whom-your-child-looks-like-with-facial-recognition-mommy-or-daddy/)
+
+<p align="center"><img src="https://raw.githubusercontent.com/serengil/deepface/master/icon/parental-look-alike-v2.jpg" width="90%" height="90%"></p>
+
+**Celebrity Look-Alike Prediction** - [`Vlog`](https://youtu.be/jaxkEn-Kieo), [`Tutorial`](https://sefiks.com/2019/05/05/celebrity-look-alike-face-recognition-with-deep-learning-in-keras/)
+
+<p align="center"><img src="https://raw.githubusercontent.com/serengil/deepface/master/icon/look-alike-v3.jpg" width="90%" height="90%"></p>
+
+## Contribution [![Tests](https://github.com/serengil/deepface/actions/workflows/tests.yml/badge.svg)](https://github.com/serengil/deepface/actions/workflows/tests.yml)
+
+Pull requests are welcome! You should run the unit tests locally by running [`test/unit_tests.py`](https://github.com/serengil/deepface/blob/master/tests/unit_tests.py). Once a PR sent, GitHub test workflow will be run automatically and unit test results will be available in [GitHub actions](https://github.com/serengil/deepface/actions) before approval.
 
 ## Support
 
-There are many ways to support a project - starring⭐️ the GitHub repos is just one.
+There are many ways to support a project - starring⭐️ the GitHub repo is just one 🙏
 
-You can also support this project on [Patreon](https://www.patreon.com/bePatron?u=31795557&redirect_uri=https%3A%2F%2Fgithub.com%2Fserengil%2Fdeepface) 🙏
+You can also support this work on [Patreon](https://www.patreon.com/serengil?repo=deepface)
 
-<p align="left"><a href="https://www.patreon.com/bePatron?u=31795557&redirect_uri=https%3A%2F%2Fgithub.com%2Fserengil%2Fdeepface"><img src="https://raw.githubusercontent.com/serengil/deepface/master/icon/patreon.png" width="30%"></a></p>
+<a href="https://www.patreon.com/serengil?repo=deepface">
+<img src="https://raw.githubusercontent.com/serengil/deepface/master/icon/patreon.png" width="30%" height="30%">
+</a>
 
 ## Citation
 
-Please cite [deepface](https://ieeexplore.ieee.org/document/9259802) in your publications if it helps your research. Here is an example BibTeX entry:
+Please cite deepface in your publications if it helps your research. Here are its BibTex entries:
+
+If you use deepface for facial recogntion purposes, please cite the this publication.
 
 ```BibTeX
 @inproceedings{serengil2020lightface,
-  title={LightFace: A Hybrid Deep Face Recognition Framework},
-  author={Serengil, Sefik Ilkin and Ozpinar, Alper},
-  booktitle={2020 Innovations in Intelligent Systems and Applications Conference (ASYU)},
-  pages={23-27},
-  year={2020},
-  doi={10.1109/ASYU50717.2020.9259802},
-  organization={IEEE}
+  title        = {LightFace: A Hybrid Deep Face Recognition Framework},
+  author       = {Serengil, Sefik Ilkin and Ozpinar, Alper},
+  booktitle    = {2020 Innovations in Intelligent Systems and Applications Conference (ASYU)},
+  pages        = {23-27},
+  year         = {2020},
+  doi          = {10.1109/ASYU50717.2020.9259802},
+  url          = {https://doi.org/10.1109/ASYU50717.2020.9259802},
+  organization = {IEEE}
 }
 ```
 
+If you use deepface for facial attribute analysis purposes such as age, gender, emotion or ethnicity prediction, please cite the this publication.
+
+```BibTeX
+@inproceedings{serengil2021lightface,
+  title        = {HyperExtended LightFace: A Facial Attribute Analysis Framework},
+  author       = {Serengil, Sefik Ilkin and Ozpinar, Alper},
+  booktitle    = {2021 International Conference on Engineering and Emerging Technologies (ICEET)},
+  pages        = {1-4},
+  year         = {2021},
+  doi          = {10.1109/ICEET53442.2021.9659697},
+  url          = {https://doi.org/10.1109/ICEET53442.2021.9659697},
+  organization = {IEEE}
+}
+```
+
+Also, if you use deepface in your GitHub projects, please add deepface in the `requirements.txt`.
+
 ## Licence
 
-Deepface is licensed under the MIT License - see [`LICENSE`](https://github.com/serengil/deepface/blob/master/LICENSE) for more details. However, the library wraps some face recognition models: [VGG-Face](http://www.robots.ox.ac.uk/~vgg/software/vgg_face/), [Facenet](https://github.com/davidsandberg/facenet/blob/master/LICENSE.md), [OpenFace](https://github.com/cmusatyalab/openface/blob/master/LICENSE), [DeepFace](https://github.com/swghosh/DeepFace), [ArcFace](https://github.com/leondgarse/Keras_insightface/blob/master/LICENSE) and [Dlib](https://github.com/davisking/dlib/blob/master/dlib/LICENSE.txt). Licence types will be inherited if you are going to use those models.
+Deepface is licensed under the MIT License - see [`LICENSE`](https://github.com/serengil/deepface/blob/master/LICENSE) for more details. However, the library wraps some external face recognition models: [VGG-Face](http://www.robots.ox.ac.uk/~vgg/software/vgg_face/), [Facenet](https://github.com/davidsandberg/facenet/blob/master/LICENSE.md), [OpenFace](https://github.com/iwantooxxoox/Keras-OpenFace/blob/master/LICENSE), [DeepFace](https://github.com/swghosh/DeepFace), [DeepID](https://github.com/Ruoyiran/DeepID/blob/master/LICENSE.md), [ArcFace](https://github.com/leondgarse/Keras_insightface/blob/master/LICENSE), [Dlib](https://github.com/davisking/dlib/blob/master/dlib/LICENSE.txt), and [SFace](https://github.com/opencv/opencv_zoo/blob/master/models/face_recognition_sface/LICENSE). Besides, age, gender and race / ethnicity models are based on VGG-Face. Licence types will be inherited if you are going to use those models. Please check the license types of those models for production purposes.
 
 Deepface [logo](https://thenounproject.com/term/face-recognition/2965879/) is created by [Adrien Coquet](https://thenounproject.com/coquet_adrien/) and it is licensed under [Creative Commons: By Attribution 3.0 License](https://creativecommons.org/licenses/by/3.0/).

@@ -1,6 +1,7 @@
 __pycache__/*
 basemodels/__pycache__/*
 configurations/__pycache__/*
+tests/__pycache__/*
 build/
 dist/
 Pipfile
@@ -14,6 +15,9 @@ deepface/commons/__pycache__/*
 deepface/basemodels/__pycache__/*
 deepface/extendedmodels/__pycache__/*
 deepface/subsidiarymodels/__pycache__/*
+deepface/detectors/__pycache__/*
 tests/dataset/*.pkl
+tests/sandbox.ipynb
 .DS_Store
 deepface/.DS_Store
+*.pyc
