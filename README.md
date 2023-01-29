@@ -1,3 +1,36 @@
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ docker start eager_poitras
+
+docker exec -u 0 -it eager_poitras bash
+
+
+
+
+
+
+
+
+
+
 # deepface
 
 <div align="center">
