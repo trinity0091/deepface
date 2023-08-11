@@ -61,6 +61,10 @@ docker exec -u 0 -it eager_poitras bash
 [![DOI](http://img.shields.io/:DOI-10.1109/ASYU50717.2020.9259802-blue.svg?style=flat)](https://doi.org/10.1109/ASYU50717.2020.9259802)
 [![DOI](http://img.shields.io/:DOI-10.1109/ICEET53442.2021.9659697-blue.svg?style=flat)](https://doi.org/10.1109/ICEET53442.2021.9659697)
 
+[![Blog](https://img.shields.io/:blog-sefiks.com-blue.svg?style=flat&logo=wordpress)](https://sefiks.com)
+[![YouTube](https://img.shields.io/:youtube-@sefiks-red.svg?style=flat&logo=youtube)](https://www.youtube.com/@sefiks?sub_confirmation=1)
+[![Twitter](https://img.shields.io/:follow-@serengil-blue.svg?style=flat&logo=twitter)](https://twitter.com/serengil)
+
 </div>
 
 <p align="center"><img src="https://raw.githubusercontent.com/serengil/deepface/master/icon/deepface-icon-labeled.png" width="200" height="240"></p>
@@ -117,7 +121,7 @@ Verification function can also handle many faces in the face pairs. In this case
 
 **Face recognition** - [`Demo`](https://youtu.be/Hrjp-EStM_s)
 
-[Face recognition](https://sefiks.com/2020/05/25/large-scale-face-recognition-for-deep-learning/) requires applying face verification many times. Herein, deepface has an out-of-the-box find function to handle this action. It's going to look for the identity of input image in the database path and it will return list of pandas data frame as output. Result is going to be the size of faces appearing in the source image. Besides, target images in the database can have many faces as well.
+[Face recognition](https://sefiks.com/2020/05/25/large-scale-face-recognition-for-deep-learning/) requires applying face verification many times. Herein, deepface has an out-of-the-box find function to handle this action. It's going to look for the identity of input image in the database path and it will return list of pandas data frame as output. Meanwhile, facial embeddings of the facial database are stored in a pickle file to be searched faster in next time. Result is going to be the size of faces appearing in the source image. Besides, target images in the database can have many faces as well.
 
 
 ```python
@@ -238,9 +242,9 @@ Age model got ± 4.65 MAE; gender model got 97.44% accuracy, 96.29% precision an
 
 **Face Detectors** - [`Demo`](https://youtu.be/GZ2p2hj2H5k)
 
-Face detection and alignment are important early stages of a modern face recognition pipeline. Experiments show that just alignment increases the face recognition accuracy almost 1%. [`OpenCV`](https://sefiks.com/2020/02/23/face-alignment-for-face-recognition-in-python-within-opencv/), [`SSD`](https://sefiks.com/2020/08/25/deep-face-detection-with-opencv-in-python/), [`Dlib`](https://sefiks.com/2020/07/11/face-recognition-with-dlib-in-python/),  [`MTCNN`](https://sefiks.com/2020/09/09/deep-face-detection-with-mtcnn-in-python/), [`RetinaFace`](https://sefiks.com/2021/04/27/deep-face-detection-with-retinaface-in-python/) and [`MediaPipe`](https://sefiks.com/2022/01/14/deep-face-detection-with-mediapipe/) detectors are wrapped in deepface.
+Face detection and alignment are important early stages of a modern face recognition pipeline. Experiments show that just alignment increases the face recognition accuracy almost 1%. [`OpenCV`](https://sefiks.com/2020/02/23/face-alignment-for-face-recognition-in-python-within-opencv/), [`SSD`](https://sefiks.com/2020/08/25/deep-face-detection-with-opencv-in-python/), [`Dlib`](https://sefiks.com/2020/07/11/face-recognition-with-dlib-in-python/),  [`MTCNN`](https://sefiks.com/2020/09/09/deep-face-detection-with-mtcnn-in-python/), [`RetinaFace`](https://sefiks.com/2021/04/27/deep-face-detection-with-retinaface-in-python/), [`MediaPipe`](https://sefiks.com/2022/01/14/deep-face-detection-with-mediapipe/), [`YOLOv8 Face`](https://github.com/derronqi/yolov8-face) and [`YuNet`](https://github.com/ShiqiYu/libfacedetection) detectors are wrapped in deepface.
 
-<p align="center"><img src="https://raw.githubusercontent.com/serengil/deepface/master/icon/detector-portfolio-v3.jpg" width="95%" height="95%"></p>
+<p align="center"><img src="https://raw.githubusercontent.com/serengil/deepface/master/icon/detector-portfolio-v5.jpg" width="95%" height="95%"></p>
 
 All deepface functions accept an optional detector backend input argument. You can switch among those detectors with this argument. OpenCV is the default detector.
 
@@ -251,7 +255,9 @@ backends = [
   'dlib', 
   'mtcnn', 
   'retinaface', 
-  'mediapipe'
+  'mediapipe',
+  'yolov8',
+  'yunet',
 ]
 
 #face verification
@@ -321,15 +327,16 @@ user
 
 **API** - [`Demo`](https://youtu.be/HeKCQ6U9XmI)
 
-Deepface serves an API as well. You can clone [`/api/api.py`](https://github.com/serengil/deepface/tree/master/api/api.py) and pass it to python command as an argument. This will get a rest service up. In this way, you can call deepface from an external system such as mobile app or web.
+DeepFace serves an API as well. You can clone [`/api`](https://github.com/serengil/deepface/tree/master/api) folder and run the api via gunicorn server. This will get a rest service up. In this way, you can call deepface from an external system such as mobile app or web.
 
-```
-python api.py
+```shell
+cd scripts
+./service.sh
 ```
 
 <p align="center"><img src="https://raw.githubusercontent.com/serengil/deepface/master/icon/deepface-api.jpg" width="90%" height="90%"></p>
 
-Face recognition, facial attribute analysis and vector representation functions are covered in the API. You are expected to call these functions as http post methods. Service endpoints will be `http://127.0.0.1:5000/verify` for face recognition, `http://127.0.0.1:5000/analyze` for facial attribute analysis, and `http://127.0.0.1:5000/represent` for vector representation. You should pass input images as base64 encoded string in this case. [Here](https://github.com/serengil/deepface/tree/master/api), you can find a postman project.
+Face recognition, facial attribute analysis and vector representation functions are covered in the API. You are expected to call these functions as http post methods. Default service endpoints will be `http://localhost:5000/verify` for face recognition, `http://localhost:5000/analyze` for facial attribute analysis, and `http://localhost:5000/represent` for vector representation. You can pass input images as exact image paths on your environment, base64 encoded strings or images on web. [Here](https://github.com/serengil/deepface/tree/master/api), you can find a postman project to find out how these methods should be called.
 
 **Dockerized Service**
 
@@ -355,24 +362,6 @@ $ deepface analyze -img_path tests/dataset/img1.jpg
 ```
 
 You can also run these commands if you are running deepface with docker. Please follow the instructions in the [shell script](https://github.com/serengil/deepface/blob/master/scripts/dockerize.sh#L17).
-
-**Tech Stack** - [`Vlog`](https://youtu.be/R8fHsL7u3eE), [`Tutorial`](https://sefiks.com/2021/03/31/tech-stack-recommendations-for-face-recognition/)
-
-Face recognition models represent facial images as vector embeddings. The idea behind facial recognition is that vectors should be more similar for same person than different persons. The question is that where and how to store facial embeddings in a large scale system. Tech stack is vast to store vector embeddings. To determine the right tool, you should consider your task such as face verification or face recognition, priority such as speed or confidence, and also data size.
-
-<p align="center"><img src="https://raw.githubusercontent.com/serengil/deepface/master/icon/tech-stack-v2.jpg" width="90%" height="90%"></p>
-
-## Derived applications
-
-You can use deepface not just for facial recognition tasks. It's very common to use DeepFace for entertainment purposes. For instance, celebrity look-alike prediction and parental look-alike prediction tasks can be done with DeepFace!
-
-**Parental Look-Alike Prediction** - [`Vlog`](https://youtu.be/nza4tmi9vhE), [`Tutorial`](https://sefiks.com/2022/12/22/decide-whom-your-child-looks-like-with-facial-recognition-mommy-or-daddy/)
-
-<p align="center"><img src="https://raw.githubusercontent.com/serengil/deepface/master/icon/parental-look-alike-v2.jpg" width="90%" height="90%"></p>
-
-**Celebrity Look-Alike Prediction** - [`Vlog`](https://youtu.be/jaxkEn-Kieo), [`Tutorial`](https://sefiks.com/2019/05/05/celebrity-look-alike-face-recognition-with-deep-learning-in-keras/)
-
-<p align="center"><img src="https://raw.githubusercontent.com/serengil/deepface/master/icon/look-alike-v3.jpg" width="90%" height="90%"></p>
 
 ## Contribution [![Tests](https://github.com/serengil/deepface/actions/workflows/tests.yml/badge.svg)](https://github.com/serengil/deepface/actions/workflows/tests.yml)
 
@@ -407,7 +396,7 @@ If you use deepface for facial recogntion purposes, please cite the this publica
 }
 ```
 
-If you use deepface for facial attribute analysis purposes such as age, gender, emotion or ethnicity prediction, please cite the this publication.
+ If you use deepface for facial attribute analysis purposes such as age, gender, emotion or ethnicity prediction or face detection purposes, please cite the this publication.
 
 ```BibTeX
 @inproceedings{serengil2021lightface,
@@ -422,7 +411,7 @@ If you use deepface for facial attribute analysis purposes such as age, gender, 
 }
 ```
 
-Also, if you use deepface in your GitHub projects, please add deepface in the `requirements.txt`.
+Also, if you use deepface in your GitHub projects, please add `deepface` in the `requirements.txt`.
 
 ## Licence
 
