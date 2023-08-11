@@ -1,3 +1,19 @@
+## how to start api
+
+pip install deepface
+
+sudo apt-get update
+sudo apt-get install libgl1-mesa-glx
+
+
+
+pip install -r requirements.txt
+
+
+
+
+python api/api.py -p 5000
+
 
 
 
